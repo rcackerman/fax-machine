@@ -13,11 +13,16 @@ client = TwilioRestClient(os.environ['TWILIO_ACCOUNT_SID'],
 
 @app.route("/", methods=['GET', 'POST'])
 def incoming():
-	# We will collect who it's from and the address
+	# Receives text messages and records who it's from and the text
 	from_number = request.form['From']
 	the_text = request.form['Body']
 
-    
+	# save to db
+
+@app.route("/whatwegot", method=['POST'])
+def display():
+	# displays what we got, for easy retrieving
+	
  
 if __name__ == "__main__":
     app.run(debug=True)
