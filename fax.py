@@ -9,9 +9,14 @@ from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import class_mapper
 from twilio.rest import TwilioRestClient
 
+'''
+Config
+POSTGRES: postgresql://localhost/test
+'''
+
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['postgres'] || 'postgresql://localhost/test'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['POSTGRES']
 db = SQLAlchemy(app)
 
 # client = TwilioRestClient(os.environ['TWILIO_ACCOUNT_SID'],
