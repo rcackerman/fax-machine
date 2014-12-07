@@ -11,7 +11,7 @@ from twilio.rest import TwilioRestClient
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/test'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['postgres'] || 'postgresql://localhost/test'
 db = SQLAlchemy(app)
 
 # client = TwilioRestClient(os.environ['TWILIO_ACCOUNT_SID'],
