@@ -60,6 +60,7 @@ def messages():
         messages =  Message.query.all()
         message_dict = [dict(sender = m.sender, date = m.date.isoformat(), body = m.body) for m in messages]
         Message.query.delete()
+        db.session.commit()
         return json.dumps(message_dict)
 
 
