@@ -59,7 +59,7 @@ def messages():
     if request.method == 'GET':
         messages =  Message.query.all()
         message_dict = [dict(sender = m.sender, date = m.date.isoformat(), body = m.body) for m in messages]
-        Message.query.all().delete()
+        Message.query.delete()
         return json.dumps(message_dict)
 
 
