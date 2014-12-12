@@ -43,7 +43,7 @@ class Message(db.Model):
 db.create_all()
 
 
-@app.route("/messages", methods=['GET', 'POST'])
+@app.route("/messages", methods=['GET', 'POST', 'DEL'])
 def messages():
     if request.method == 'POST':
         # Receives text messages and records who it's from and the text
@@ -59,8 +59,8 @@ def messages():
     if request.method == 'GET':
         messages =  Message.query.all()
         message_dict = [dict(sender = m.sender, date = m.date.isoformat(), body = m.body) for m in messages]
+        Message.query.all().delete()
         return json.dumps(message_dict)
-
 
 
 if __name__ == "__main__":
