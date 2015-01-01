@@ -61,7 +61,10 @@ def messages():
         message_dict = [dict(sender = m.sender, date = m.date.isoformat(), body = m.body) for m in messages]
         return json.dumps(message_dict)
 
-
+@app.route("/messages/<int:message_id>", methods=['GET'])
+def show_message(message_id):
+    if request.method == 'GET':
+        message = Message.query.
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
