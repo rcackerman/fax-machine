@@ -66,10 +66,25 @@ def messages():
         db.session.commit()
         return "OK", 204
 
-@app.route("/messages/<int:message_id>", methods=['GET'])
+@app.route("/messages/<int:message_id>", methods=['GET', 'DELETE'])
 def show_message(message_id):
+    # Shows and deletes individual messages
     if request.method == 'GET':
-        message = Message.query.
+        message = Message.query.get(1)
+        if message:
+            message_dict = dict(sender = m.sender, date = m.date.isoformat(), body = m.body)
+            return json.dumps(message_dict)
+        else:
+            return "Not Found", 404
+
+    if request.method == 'DELTE':
+        message = Message.query.get(1)
+        if message:
+            message.query.delete()
+            message.query.commit()
+            return "OK", 204
+        else:
+            return "Not Found", 404
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
