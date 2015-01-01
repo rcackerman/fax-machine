@@ -57,11 +57,15 @@ def messages():
         return "OK", 201
 
     if request.method == 'GET':
-        messages =  Message.query.all()
         message_dict = [dict(sender = m.sender, date = m.date.isoformat(), body = m.body) for m in messages]
+        return json.dumps(message_dict)
+
+    if request.method == 'DEL':
+        messages =  Message.query.all()
         Message.query.delete()
         db.session.commit()
-        return json.dumps(message_dict)
+        return "OK", 204
+
 
 
 if __name__ == "__main__":
