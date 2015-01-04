@@ -19,8 +19,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 db = SQLAlchemy(app)
 
-# client = TwilioRestClient(os.environ['TWILIO_ACCOUNT_SID'],
-# os.environ['TWILIO_TOKEN'])
+client = TwilioRestClient(os.environ['TWILIO_ACCOUNT_SID'],
+ os.environ['TWILIO_TOKEN'])
 
 class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,6 +42,29 @@ class Message(db.Model):
 # Create the tables if needed.
 db.create_all()
 
+@app.route("/twiliomessages", methods=['GET', 'POST', 'DELETE'])
+def twilio_messages():
+    if request.method == 'POST':
+        # Receives text messages and records who it's from and the text
+        sender = request.values.get('From')
+        body = request.values.get('Body')
+
+        # save to db
+        m = Message(sender, body)
+        db.session.add(m)
+        db.session.commit()
+        return "OK", 201
+
+    if request.method == 'GET':
+        messages = Message.query.all()
+        message_dict = [dict(message_id = m.id, sender = m.sender, date = m.date.isoformat(), body = m.body) for m in messages]
+        return json.dumps(message_dict)
+
+    if request.method == 'DELETE':
+        messages =  Message.query.all()
+        Message.query.delete()
+        db.session.commit()
+        return "OK", 204
 
 @app.route("/messages", methods=['GET', 'POST', 'DELETE'])
 def messages():
